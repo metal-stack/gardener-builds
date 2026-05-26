@@ -11,7 +11,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-    build:
+    gardener:
         name: Gardener Build
         runs-on: ubuntu-latest
 
@@ -31,3 +31,24 @@ jobs:
 
           - name: build gardener images
             run: gardener/build.sh
+
+    mcm:
+        name: Machine Controller Manager Build
+        runs-on: ubuntu-latest
+
+        steps:
+          - name: Log in to the container registry
+            uses: docker/login-action@v4
+            with:
+              registry: ${{ env.REGISTRY }}
+              username: ${{ secrets.DOCKER_REGISTRY_USER }}
+              password: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
+
+          - name: Checkout
+            uses: actions/checkout@v6
+
+          - name: set gardener version
+            run: echo "BUILD_BRANCH=support-ignition" >> $GITHUB_ENV
+
+          - name: build gardener images
+            run: machine-controller-manager/build.sh

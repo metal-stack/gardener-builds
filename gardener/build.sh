@@ -7,7 +7,7 @@ git clone -b "${BUILD_BRANCH}" https://github.com/metal-stack/gardener.git
 
 cd gardener
 
-REGISTRY=ghcr.io/metal-stack/gardener-builds
+REGISTRY=ghcr.io/metal-stack/gardener
 BUILD_BRANCH=${BUILD_BRANCH:-"master"}
 BUILD_SHA=$(git log --pretty=format:'%h' -n 1)
 

@@ -1,17 +1,21 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-BUILD_BRANCH=${BUILD_BRANCH:-"master"}
-DOCKERMAKE_FILE_PATH=$(pwd)/docker-make.yaml
-
-echo "*** Cloning"
-
-rm -rf machine-controller-manager
+mkdir work
+cd work
 git clone -b "${BUILD_BRANCH}" https://github.com/metal-stack/machine-controller-manager.git
 
-echo "*** Build and Push"
-
 cd machine-controller-manager
-export BUILD_SHA=$(git log --pretty=format:'%h' -n 1)
 
-docker-make --Lint --summary -f "${DOCKERMAKE_FILE_PATH}"
+REGISTRY=ghcr.io/metal-stack/gardener
+IMAGE=machine-controller-manager
+
+BUILD_BRANCH=${BUILD_BRANCH:-"master"}
+BUILD_SHA=$(git log --pretty=format:'%h' -n 1)
+
+docker build --build-arg BUILDPLATFORM=linux/amd64 \
+    --tag "${REGISTRY}/${IMAGE}:${BUILD_BRANCH}" \
+    --tag "${REGISTRY}/${IMAGE}:${BUILD_SHA}" .
+
+docker push "${REGISTRY}/${IMAGE}:${BUILD_BRANCH}"
+docker push "${REGISTRY}/${IMAGE}:${BUILD_SHA}"
