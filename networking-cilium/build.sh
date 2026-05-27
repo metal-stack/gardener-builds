@@ -9,7 +9,7 @@ git clone -b "${BUILD_BRANCH}" https://github.com/metal-stack/gardener-extension
 
 cd gardener-extension-networking-cilium
 
-REGISTRY=ghcr.io/metal-stack/gardener
+REGISTRY=ghcr.io/metal-stack/gardener-builds
 IMAGE=gardener-extension-networking-cilium
 CONTROLLER_VERSION=$(cat VERSION | tr -d " \t\n\r")
 

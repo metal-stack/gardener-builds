@@ -8,7 +8,7 @@ git clone -b "${BUILD_BRANCH}" https://github.com/metal-stack/gardener-extension
 
 cd gardener-extension-networking-calico
 
-REGISTRY=ghcr.io/metal-stack/gardener
+REGISTRY=ghcr.io/metal-stack/gardener-builds
 IMAGE=gardener-extension-networking-calico
 
 BUILD_BRANCH=${BUILD_BRANCH:-"master"}

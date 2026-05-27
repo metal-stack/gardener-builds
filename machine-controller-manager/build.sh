@@ -7,7 +7,7 @@ git clone -b "${BUILD_BRANCH}" https://github.com/metal-stack/machine-controller
 
 cd machine-controller-manager
 
-REGISTRY=ghcr.io/metal-stack/gardener
+REGISTRY=ghcr.io/metal-stack/gardener-builds
 IMAGE=machine-controller-manager
 
 BUILD_BRANCH=${BUILD_BRANCH:-"master"}
