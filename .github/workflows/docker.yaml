@@ -2,17 +2,18 @@
 name: Docker Build Action
 
 on:
-#   push:
-#     branches:
-#     - main
   workflow_dispatch:
     inputs:
       gardener_branch:
         description: 'Gardener branch to build'
-        required: true
+        required: false
         type: string
       mcm_branch:
         description: 'MCM branch to build'
+        required: false
+        type: string
+      calico_branch:
+        description: 'Networking Calico branch to build'
         required: false
         type: string
 env:
@@ -63,3 +64,24 @@ jobs:
 
           - name: build gardener images
             run: machine-controller-manager/build.sh
+    networking-calico:
+        name: Gardener Extension Networking Calico Build
+        runs-on: ubuntu-latest
+        if: ${{ inputs.mcm_branch }}
+
+        steps:
+          - name: Log in to the container registry
+            uses: docker/login-action@v4
+            with:
+              registry: ${{ env.REGISTRY }}
+              username: ${{ secrets.DOCKER_REGISTRY_USER }}
+              password: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
+
+          - name: Checkout
+            uses: actions/checkout@v6
+
+          - name: set gardener version
+            run: echo "BUILD_BRANCH=${{ inputs.calico_branch }}" >> $GITHUB_ENV
+
+          - name: build gardener images
+            run: networking-calico/build.sh

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
+# FIXME not working for admission yet
 
 mkdir work
 cd work
